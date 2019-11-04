@@ -18,14 +18,24 @@ class PhotoDetailViewController: UIViewController {
     
     @IBAction func save(_ sender: Any) {
         guard let image = imageView.image else { return }
-        PHPhotoLibrary.shared().performChanges({
-            PHAssetChangeRequest.creationRequestForAsset(from: image)
-        }, completionHandler: { (success, error) in
-            if let error = error {
-                NSLog("Error saving photo: \(error)")
-                return
+        
+        PHPhotoLibrary.requestAuthorization { status in
+            switch status {
+            case .authorized:
+                PHPhotoLibrary.shared().performChanges({
+                    PHAssetChangeRequest.creationRequestForAsset(from: image)
+                }, completionHandler: { (success, error) in
+                    if let error = error {
+                        NSLog("Error saving photo: \(error)")
+                        return
+                    }
+                })
+            default:
+                //FIXME: show an alert because the user was not authorized
+                break
             }
-        })
+        }
+        
     }
     
     // MARK: - Private
