@@ -28,22 +28,28 @@ class PhotosCollectionViewController: UIViewController, UICollectionViewDataSour
     
     @IBAction func goToPreviousSol(_ sender: Any?) {
         guard let solDescriptions = roverInfo?.solDescriptions else { return }
-        guard let sol = solDescription?.sol, sol > 0 else {
+        
+        guard let currentDescription = solDescription,
+            let index = solDescriptions.firstIndex(of: currentDescription),
+            index > 0 else {
             solDescription = solDescriptions.first
             return
         }
         
-        solDescription = solDescriptions[sol-1]
+        solDescription = solDescriptions[index - 1]
     }
     
     @IBAction func goToNextSol(_ sender: Any?) {
         guard let solDescriptions = roverInfo?.solDescriptions else { return }
-        guard let sol = solDescription?.sol, sol < solDescriptions.count else {
-            solDescription = solDescriptions.last
+        
+        guard let currentDescription = solDescription,
+            let index = solDescriptions.firstIndex(of: currentDescription),
+            index < solDescriptions.count else {
+            solDescription = solDescriptions.first
             return
         }
         
-        solDescription = solDescriptions[sol+1]
+        solDescription = solDescriptions[index + 1]
     }
     
     // UICollectionViewDataSource/Delegate
