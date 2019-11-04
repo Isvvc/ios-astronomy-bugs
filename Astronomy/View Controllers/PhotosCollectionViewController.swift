@@ -66,6 +66,8 @@ class PhotosCollectionViewController: UIViewController, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard indexPath.item < photoReferences.count else { return }
+        
         let photoRef = photoReferences[indexPath.item]
         operations[photoRef.id]?.cancel()
     }
